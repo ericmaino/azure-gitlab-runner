@@ -31,6 +31,16 @@ if [ -n "${ALLOW_UNTAGGED}" ]; then
     _UNTAGGED=${ALLOW_UNTAGGED}
 fi
 
+if [ -n "${GITLAB_CLIENT_KEY}" ]; then
+    echo "${GITLAB_CLIENT_KEY}" > /etc/gitlab-runner/client-key.pem
+    export CI_SERVER_TLS_KEY_FILE="/etc/gitlab-runner/client-key.pem"
+fi  
+
+if [ -n "${GITLAB_CRT}" ]; then
+    echo "${GITLAB_CRT}" > /etc/gitlab-runner/gitlab-crt.pem
+    export CI_SERVER_TLS_CERT_FILE="/etc/gitlab-runner/gitlab-crt.pem"
+fi
+
 if [ ! -f ~/REGISTERED ]; then
     echo . > ~/REGISTERED
     ${X_SHELL} register --non-interactive \
